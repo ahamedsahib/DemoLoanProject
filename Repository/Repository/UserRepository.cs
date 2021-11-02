@@ -80,5 +80,25 @@ namespace Repository.Repository
                 throw new ArgumentNullException(ex.Message);
             }
         }
+
+        public RegisterModel GetUserDetails(int userId)
+        {
+            try
+            {
+                var userDetails = this.userContext.UsersData.Where(a => a.UserId == userId).SingleOrDefault();
+              
+
+             if(userDetails!=null)
+                {
+                    return userDetails;
+                }
+                return null;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

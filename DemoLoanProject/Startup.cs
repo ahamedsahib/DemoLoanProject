@@ -36,6 +36,8 @@ namespace DemoLoanProject
             options => options.UseSqlServer(this.Configuration.GetConnectionString("UserDbConnection")));
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IUserManager, UserManager>();
+            services.AddTransient<IPropertyManager, PropertyManager>();
+            services.AddTransient<IPropertyRepository, PropertyRepository>();
 
             services.AddSwaggerGen(c =>
             {
