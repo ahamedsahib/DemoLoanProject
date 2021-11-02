@@ -10,12 +10,12 @@ namespace Manager.Manager
     public class UserManager :IUserManager
     {
        
-        private readonly IUserRepository repoistory;
+        private readonly IUserRepository userrepoistory;
 
       
-        public UserManager(IUserRepository repoistory)
+        public UserManager(IUserRepository userrepoistory)
         {
-            this.repoistory = repoistory;
+            this.userrepoistory = userrepoistory;
         }
 
   
@@ -23,7 +23,7 @@ namespace Manager.Manager
         {
             try
             {
-                return this.repoistory.Register(userData);
+                return this.userrepoistory.Register(userData);
             }
             catch (Exception ex)
             {
@@ -36,12 +36,26 @@ namespace Manager.Manager
         {
             try
             {
-                return this.repoistory.Login(loginData);
+                return this.userrepoistory.Login(loginData);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
+
+        public RegisterModel GetUserDetails(int userId)
+        {
+            try
+            {
+                return this.userrepoistory.GetUserDetails(userId);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+
     }
 }

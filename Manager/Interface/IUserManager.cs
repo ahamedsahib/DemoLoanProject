@@ -10,5 +10,7 @@ namespace Manager.Interface
         string Register(RegisterModel userData);
 
         RegisterModel Login(LoginModel loginData);
+
+        RegisterModel GetUserDetails(int userId);
     }
 }

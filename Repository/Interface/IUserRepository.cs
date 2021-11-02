@@ -11,5 +11,6 @@ namespace Repository.Interface
         string EncryptPassWord(string password);
 
         RegisterModel Login(LoginModel loginData);
+        RegisterModel GetUserDetails(int userId);
     }
 }
