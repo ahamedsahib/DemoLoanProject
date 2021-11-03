@@ -21,14 +21,14 @@ namespace DemoLoanProject.Controller
 
         [HttpPost]
         [Route("Property")]
-        public IActionResult AddProperty([FromBody] List<PropertyModel> propertyData,int formId, int userId)
+        public IActionResult AddProperty([FromBody] List<PropertyModel> propertyData, int formId, int userId)
         {
             try
             {
-                var message = this.propertyManager.AddProperty(propertyData,formId,userId);
+                var message = this.propertyManager.AddProperty(propertyData, formId, userId);
                 if (message != null)
                 {
-                    return this.Ok(new { Status = true,  Message = "Added Sucessfully" ,Data=message});
+                    return this.Ok(new { Status = true, Message = "Added Sucessfully", Data = message });
                 }
                 else
                 {
