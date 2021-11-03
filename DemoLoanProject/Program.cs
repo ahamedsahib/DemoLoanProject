@@ -1,4 +1,4 @@
-using Castle.Core.Internal;
+
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -29,10 +29,10 @@ namespace DemoLoanProject
         public static void Main(string[] args)
         {
            
-            var logger = NLogBuilder.ConfigureNLog("Nlog.Config").GetCurrentClassLogger();
-            logger.Debug("Main function");
+            //var logger = NLogBuilder.ConfigureNLog("Nlog.Config").GetCurrentClassLogger();
+            //logger.Debug("Main function");
             //CreateHostBuilder(args).Build().Run();
-            NLog.LogManager.Shutdown();
+            //NLog.LogManager.Shutdown();
 
             IConfigurationRoot configurationRoot = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true).Build();
@@ -63,10 +63,6 @@ namespace DemoLoanProject
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>().UseSerilog();
-                }).ConfigureLogging(logging =>
-                {
-                    logging.ClearProviders();
-                    logging.SetMinimumLevel(LogLevel.Information);
-                }).UseNLog();
+                });
     }
 }

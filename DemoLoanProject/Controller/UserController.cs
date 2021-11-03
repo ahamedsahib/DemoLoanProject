@@ -58,9 +58,7 @@ namespace DemoLoanProject.Controller
             {
                 var result = this.usermanager.Login(loginData);
                 if (result!=null)
-                {
-                   
-                    //string tokenString = this.manager.GenerateToken(loginData.EmailId);
+                { 
                     return this.Ok(new { Status = true, Message = "Login Successful!!!", Data = result});
                 }
                 else
