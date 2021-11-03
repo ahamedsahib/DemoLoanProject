@@ -15,5 +15,7 @@ namespace Repository.Context
         public DbSet<RegisterModel> UsersData { get; set; }
 
         public DbSet<PropertyModel> Property { get; set; }
+
+        public DbSet<FormModel> Forms { get; set; }
     }
 }

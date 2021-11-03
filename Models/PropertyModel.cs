@@ -13,15 +13,17 @@ namespace Models
 
         public string Property { get; set; }
 
-        public string PropertyWorth { get; set; }
+        public long PropertyWorth { get; set; }
 
-        public string Status { get; set; }
 
-        [Display(Name = "RegisterModel")]
-        public virtual int UserId { get; set; }
+        [ForeignKey("RegisterModel")]
+        public  int? UserId { get; set; }
 
-    
-        [ForeignKey("UserId")]
         public virtual RegisterModel RegisterModel { get; set; }
+
+        [ForeignKey("FormModel")]
+        public  int FormId { get; set; }
+        public virtual FormModel FormModel { get; set; }
+
     }
 }

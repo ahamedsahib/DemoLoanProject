@@ -2,7 +2,7 @@
 
 namespace Repository.Migrations
 {
-    public partial class DemoLoanProject : Migration
+    public partial class DemoLoan : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -25,26 +25,63 @@ namespace Repository.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Forms",
+                columns: table => new
+                {
+                    FormId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ReasonForLoan = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Forms", x => x.FormId);
+                    table.ForeignKey(
+                        name: "FK_Forms_UsersData_UserId",
+                        column: x => x.UserId,
+                        principalTable: "UsersData",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Property",
                 columns: table => new
                 {
                     PropertyId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Property = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PropertyWorth = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    PropertyWorth = table.Column<long>(type: "bigint", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: true),
+                    FormId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Property", x => x.PropertyId);
                     table.ForeignKey(
+                        name: "FK_Property_Forms_FormId",
+                        column: x => x.FormId,
+                        principalTable: "Forms",
+                        principalColumn: "FormId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_Property_UsersData_UserId",
                         column: x => x.UserId,
                         principalTable: "UsersData",
                         principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Forms_UserId",
+                table: "Forms",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Property_FormId",
+                table: "Property",
+                column: "FormId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Property_UserId",
@@ -56,6 +93,9 @@ namespace Repository.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Property");
+
+            migrationBuilder.DropTable(
+                name: "Forms");
 
             migrationBuilder.DropTable(
                 name: "UsersData");
