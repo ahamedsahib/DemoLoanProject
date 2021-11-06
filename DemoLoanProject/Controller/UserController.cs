@@ -1,27 +1,55 @@
-﻿using Manager.Interface;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="UserController.cs" company="TVSNEXT">
+//   Copyright © 2021 Company="TVSNEXT"
+// </copyright>
+// <creator name="Radhika"/>
+// ----------------------------------------------------------------------------------------------------------
 
 namespace DemoLoanProject.Controller
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using Manager.Interface;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Logging;
+    using Models;
+ 
+    /// <summary>
+    /// Controller class-controlling API
+    /// </summary>
+    /// [Route("api/[controller]")]
     [ApiController]
     [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
+        /// <summary>
+        /// instance user manager 
+        /// </summary>
         private readonly IUserManager usermanager;
 
+        /// <summary>
+        /// instance for logger
+        /// </summary>
         private readonly ILogger<UserController> logger;
+
+        /// <summary>
+        ///  Initializes a new instance of the <see cref="UserController"/> class
+        /// </summary>
+        /// <param name="usermanager">passing a manager parameter</param>
+        /// <param name="logger">passing a logger parameter</param>
         public UserController(IUserManager usermanager, ILogger<UserController> logger)
         {
             this.usermanager = usermanager;
             this.logger = logger;
-
         }
+
+        /// <summary>
+        /// controller-register  method
+        /// </summary>
+        /// <param name="userData">passing a register model data</param>
+        /// <returns>return http status if registered successfully</returns>
         [HttpPost]
         [Route("Register")]
 
@@ -32,7 +60,6 @@ namespace DemoLoanProject.Controller
                 string resMessage = this.usermanager.Register(userData);
                 if (resMessage.Equals("Registration Successful"))
                 {
-             
                     return this.Ok(new ResponseModel<string>() { Status = true, Message = resMessage });
                 }
                 else
@@ -43,25 +70,27 @@ namespace DemoLoanProject.Controller
             }
             catch (Exception ex)
             {
-
                 this.logger.LogError("Exception Occured While Register " + ex.Message);
                 return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
             }
         }
 
+        /// <summary>
+        /// login API for already existing user 
+        /// </summary>
+        /// <param name="loginData">login model data</param>
+        /// <returns>returns http status if logged in successfully</returns>
         [HttpPost]
         [Route("Login")]
 
-        public IActionResult Login([FromBody] LoginModel loginData)
+       public IActionResult Login([FromBody] LoginModel loginData)
         {
             try
             {
                 var result = this.usermanager.Login(loginData);
-                if (result!=null)
-                {
-                   
-                    //string tokenString = this.manager.GenerateToken(loginData.EmailId);
-                    return this.Ok(new { Status = true, Message = "Login Successful!!!", Data = result});
+                if (result != null)
+                { 
+                    return this.Ok(new { Status = true, Message = "Login Successful!!!", Data = result });
                 }
                 else
                 {
@@ -76,7 +105,11 @@ namespace DemoLoanProject.Controller
             }
         }
 
-
+        /// <summary>
+        /// Get User Details based on User Id
+        /// </summary>
+        /// <param name="userId">passing a user id as integer</param>
+        /// <returns>Returns a user details </returns>
         [HttpGet]
         [Route("Users")]
         public IActionResult GetUserDetails(int userId)
@@ -90,15 +123,15 @@ namespace DemoLoanProject.Controller
                 }
                 else
                 {
+                    this.logger.LogWarning("UserId does not exist");
                     return this.BadRequest(new ResponseModel<string>() { Status = false, Message = "UserId does not exist" });
                 }
             }
             catch (Exception ex)
             {
+                this.logger.LogError("Exception Occured While log in " + ex.Message);
                 return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
             }
         }
-
-
     }
 }

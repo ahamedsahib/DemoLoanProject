@@ -17,12 +17,23 @@ namespace Manager.Manager
             this.propertyRepository = propertyRepository;
         }
 
-   
-        public PropertyModel AddProperty(PropertyModel propertyData)
+        public FormModel AddForm(FormList formList)
         {
             try
             {
-                return this.propertyRepository.AddProperty(propertyData);
+                return this.propertyRepository.AddForm(formList);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public string  AddProperty(List<PropertyModel> propertyData, int formId, int userId)
+        {
+            try
+            {
+                return this.propertyRepository.AddProperty(propertyData,formId, userId);
             }
             catch (Exception ex)
             {

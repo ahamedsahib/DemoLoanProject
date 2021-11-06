@@ -7,8 +7,10 @@ namespace Repository.Interface
 {
     public interface IPropertyRepository
     {
-        PropertyModel AddProperty(PropertyModel propertyData);
+        string AddProperty(List<PropertyModel> propertyData, int formId, int userId);
 
         List<PropertyModel> GetPropertyDetails(int userId);
+
+        FormModel AddForm(FormList formList);
     }
 }
