@@ -1,24 +1,43 @@
-﻿using Manager.Interface;
-using Models;
-using Repository.Interface;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="UserManager.cs" company="TVSNEXT">
+//   Copyright © 2021 Company="TVSNEXT"
+// </copyright>
+// <creator name="Radhika"/>
+// ----------------------------------------------------------------------------------------------------------
 
 namespace Manager.Manager
 {
-    public class UserManager :IUserManager
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+    using global::Manager.Interface;
+    using Models;
+    using Repository.Interface;
+
+    /// <summary>
+    /// Class User manager
+    /// </summary>
+    public class UserManager : IUserManager
     {
-       
+        /// <summary>
+        /// declaring repository
+        /// </summary>
         private readonly IUserRepository userrepoistory;
 
-      
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UserManager"/> class
+        /// </summary>
+        /// <param name="userrepoistory">user repository as parameter</param>
         public UserManager(IUserRepository userrepoistory)
         {
             this.userrepoistory = userrepoistory;
         }
 
-  
+       /// <summary>
+       /// Register Method
+       /// </summary>
+       /// <param name="userData">passing a register model</param>
+       /// <returns>returns a string message</returns>
         public string Register(RegisterModel userData)
         {
             try
@@ -31,7 +50,11 @@ namespace Manager.Manager
             }
         }
 
-
+        /// <summary>
+        /// Login Method
+        /// </summary>
+        /// <param name="loginData">passing a login model data</param>
+        /// <returns>Returns a register model</returns>
         public RegisterModel Login(LoginModel loginData) 
         {
             try
@@ -43,19 +66,5 @@ namespace Manager.Manager
                 throw new Exception(ex.Message);
             }
         }
-
-        public RegisterModel GetUserDetails(int userId)
-        {
-            try
-            {
-                return this.userrepoistory.GetUserDetails(userId);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-
     }
 }

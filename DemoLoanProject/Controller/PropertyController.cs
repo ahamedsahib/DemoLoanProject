@@ -29,12 +29,16 @@ namespace DemoLoanProject.Controller
         /// </summary>
         private readonly IPropertyManager propertyManager;
 
+        /// <summary>
+        /// instance for logger
+        /// </summary>
         private readonly ILogger<PropertyController> logger;
 
         /// <summary>
         ///  Initializes a new instance of the <see cref="PropertyController"/> class
         /// </summary>
         /// <param name="propertyManager">passing a manager parameter</param>
+        /// <param name="logger">passing a logger parameter</param>
         public PropertyController(IPropertyManager propertyManager, ILogger<PropertyController> logger)
         {
             this.propertyManager = propertyManager;
@@ -55,12 +59,12 @@ namespace DemoLoanProject.Controller
                 var message = this.propertyManager.AddForm(formList);
                 if (message != null)
                 {
-                    return this.Ok(new { Status = true, Message = "Added Sucessfully", Data = message });
+                    return this.Ok(new { Status = true, Message = message });
                 }
                 else
                 {
                     this.logger.LogWarning("Form Data Not added successfully");
-                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = "Not added successfully" });
+                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = message });
                 }
             }
             catch (Exception ex)
