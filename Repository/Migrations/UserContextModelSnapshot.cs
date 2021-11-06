@@ -35,6 +35,9 @@ namespace Repository.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
+                    b.Property<double>("loanAmount")
+                        .HasColumnType("float");
+
                     b.HasKey("FormId");
 
                     b.HasIndex("UserId");
