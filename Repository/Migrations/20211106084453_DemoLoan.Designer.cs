@@ -10,7 +10,7 @@ using Repository.Context;
 namespace Repository.Migrations
 {
     [DbContext(typeof(UserContext))]
-    [Migration("20211103104145_DemoLoan")]
+    [Migration("20211106084453_DemoLoan")]
     partial class DemoLoan
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,6 +36,9 @@ namespace Repository.Migrations
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
+
+                    b.Property<double>("loanAmount")
+                        .HasColumnType("float");
 
                     b.HasKey("FormId");
 

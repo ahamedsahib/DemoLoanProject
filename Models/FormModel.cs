@@ -17,6 +17,8 @@ namespace Models
 
         public string ReasonForLoan { get; set; }
 
+        public double loanAmount { get; set; }
+
         [ForeignKey("RegisterModel")]
         public int UserId { get; set; }
 

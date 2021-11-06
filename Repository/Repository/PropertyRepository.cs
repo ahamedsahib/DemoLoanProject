@@ -36,7 +36,7 @@ namespace Repository.Repository
                 {
                     this.userContext.Forms.Add(form);
                     this.userContext.SaveChanges();
-                    var formData = this.userContext.Forms.Where(a => a.ReasonForLoan.Equals(formList.ReasonForLoan) && a.UserId==formList.UserId).FirstOrDefault();
+                    var formData = this.userContext.Forms.Where(a => a.ReasonForLoan.Equals(formList.ReasonForLoan) && a.UserId==formList.UserId && a.Status.Equals("Pending")).FirstOrDefault();
                     AddProperty(formList.propertiesList,formData.FormId,formData.UserId);
                     return formData;
                 }
@@ -74,24 +74,27 @@ namespace Repository.Repository
         private string CalculateLoan(int formId)
         {
             string message = "";
-            string email="radhika.shankar1220@gmail.com";
+            var userId = this.userContext.Forms.Where(x => x.FormId == formId).Select(x=>x.UserId).FirstOrDefault();
+            var email = this.userContext.UsersData.Where(x => x.UserId == userId).Select(x => x.EmailId).FirstOrDefault();
             try
             {
                 var f = this.userContext.Forms.Where(a => a.FormId == formId).FirstOrDefault();
                 var d = this.userContext.Property.Where(a=>a.FormId == formId).ToList();
                 var sumOfProperty = d.Select(x => x.PropertyWorth).Sum();
-                var loanAmount = 0.1 * sumOfProperty;
+                var Amount = 0.1 * sumOfProperty;
 
-                if (loanAmount > 0)
+                if (Amount > 0)
                 {
                     f.Status = "Approved";
+                    f.loanAmount = Amount;
                     this.userContext.SaveChanges();
                     message = f.Status;
-                    SendMSMQ(f, loanAmount);
+                    SendMSMQ(f, Amount);
 
                     if (this.SendMail(email))
                     {
-                        return message + " " + loanAmount + " " + f.ReasonForLoan;
+                        return "Your loan is approved for amount " + " " + Amount + " " + f.ReasonForLoan;
+                
                     }
                     else
                     {
@@ -103,11 +106,11 @@ namespace Repository.Repository
                     f.Status = "Denied";
                     this.userContext.SaveChanges();
                     message = f.Status;
-                    SendMSMQ(f, loanAmount);
+                    SendMSMQ(f, Amount);
 
                     if (this.SendMail(email))
                     {
-                        return message + " " + loanAmount + " " + f.ReasonForLoan;
+                        return "Your loan is denied" + " " + Amount + " " + f.ReasonForLoan;
                     }
                     else
                     {
@@ -171,7 +174,7 @@ namespace Repository.Repository
             SmtpClient smtp = new SmtpClient("smtp.gmail.com");
             mailMessage.From = new MailAddress("radhika.shankar1220@gmail.com");
             mailMessage.To.Add(new MailAddress(email));
-            mailMessage.Subject = "Message for loan";
+            mailMessage.Subject = "Loan Approval Message";
             mailMessage.Body = message;
             smtp.EnableSsl = true;
             mailMessage.IsBodyHtml = true;

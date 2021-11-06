@@ -60,7 +60,6 @@ namespace DemoLoanProject
             services.AddTransient<IUserManager, UserManager>();
             services.AddTransient<IPropertyManager, PropertyManager>();
             services.AddTransient<IPropertyRepository, PropertyRepository>();
-
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc(
@@ -71,23 +70,21 @@ namespace DemoLoanProject
                      Description = "Demo Loan Project",
                      Version = "1.0"
                  });
-                services.AddDistributedMemoryCache();
-                services.AddSession(options =>
-                {
-                    options.IdleTimeout = TimeSpan.FromMinutes(5);  
-                });
-                services.AddCors(options =>
-                {
-                    options.AddPolicy(name: "CorsPolicyAllHosts",
-                        builder =>
-                    { 
-                        builder.AllowAnyHeader();
-                        builder.AllowAnyMethod();
-                        builder.AllowAnyOrigin();
-                    });
-                });
+
             });
-    }
+            services.AddCors(options =>
+            {
+            options.AddPolicy(name: "CorsPolicyAllHosts",
+              builder =>
+             {
+               builder.AllowAnyHeader();
+               builder.AllowAnyMethod();
+               builder.AllowAnyOrigin();
+           });
+       });
+        }
+
+    
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 
