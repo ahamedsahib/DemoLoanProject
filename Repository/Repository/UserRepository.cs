@@ -18,11 +18,9 @@ namespace Repository.Repository
             this.userContext = userContext;
             this.Configuration = configuration;
         }
-
  
         private IConfiguration Configuration { get; }
 
-       
         public string Register(RegisterModel userData)
         {
             try

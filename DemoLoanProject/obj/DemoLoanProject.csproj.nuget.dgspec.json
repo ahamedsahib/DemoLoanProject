@@ -94,6 +94,10 @@
               "target": "Package",
               "version": "[4.1.0, )"
             },
+            "Serilog.Exceptions": {
+              "target": "Package",
+              "version": "[7.1.0, )"
+            },
             "Serilog.Settings.Configuration": {
               "target": "Package",
               "version": "[3.3.0, )"

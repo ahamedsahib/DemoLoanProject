@@ -122,3 +122,4 @@ C:\Users\radhika.s\source\repos\DemoLoanProject\DemoLoanProject\bin\Debug\netcor
 C:\Users\radhika.s\source\repos\DemoLoanProject\DemoLoanProject\bin\Debug\netcoreapp3.1\System.Text.Encodings.Web.dll
 C:\Users\radhika.s\source\repos\DemoLoanProject\DemoLoanProject\bin\Debug\netcoreapp3.1\System.Text.Json.dll
 C:\Users\radhika.s\source\repos\DemoLoanProject\DemoLoanProject\bin\Debug\netcoreapp3.1\Experimental.System.Messaging.dll
+C:\Users\radhika.s\source\repos\DemoLoanProject\DemoLoanProject\bin\Debug\netcoreapp3.1\Serilog.Exceptions.dll

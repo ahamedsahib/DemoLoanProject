@@ -1,46 +1,51 @@
-﻿using Manager.Interface;
-using Microsoft.AspNetCore.Mvc;
-using Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="PropertyController.cs" company="TVSNEXT">
+//   Copyright © 2021 Company="TVSNEXT"
+// </copyright>
+// <creator name="Radhika"/>
+// ----------------------------------------------------------------------------------------------------------
 
 namespace DemoLoanProject.Controller
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using Manager.Interface;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Logging;
+    using Models;
+
+    /// <summary>
+    /// Controller class-controlling API
+    /// </summary>
+    /// [Route("api/[controller]")]
     [ApiController]
     [Route("api/[controller]")]
     public class PropertyController : ControllerBase
     {
+        /// <summary>
+        /// instance property manager 
+        /// </summary>
         private readonly IPropertyManager propertyManager;
 
-        public PropertyController(IPropertyManager propertyManager)
+        private readonly ILogger<PropertyController> logger;
+
+        /// <summary>
+        ///  Initializes a new instance of the <see cref="PropertyController"/> class
+        /// </summary>
+        /// <param name="propertyManager">passing a manager parameter</param>
+        public PropertyController(IPropertyManager propertyManager, ILogger<PropertyController> logger)
         {
             this.propertyManager = propertyManager;
+            this.logger = logger;
         }
 
-        [HttpPost]
-        [Route("Property")]
-        public IActionResult AddProperty([FromBody] List<PropertyModel> propertyData, int formId, int userId)
-        {
-            try
-            {
-                var message = this.propertyManager.AddProperty(propertyData, formId, userId);
-                if (message != null)
-                {
-                    return this.Ok(new { Status = true, Message = "Added Sucessfully", Data = message });
-                }
-                else
-                {
-                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = "Not added successfully" });
-                }
-            }
-            catch (Exception ex)
-            {
-                return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
-            }
-        }
-
+        /// <summary>
+        /// Add Form Data
+        /// </summary>
+        /// <param name="formList">passing a formList model</param>
+        /// <returns>Returns a formList data and message </returns>
         [HttpPost]
         [Route("AddForm")]
         public IActionResult AddForm([FromBody] FormList formList)
@@ -54,14 +59,22 @@ namespace DemoLoanProject.Controller
                 }
                 else
                 {
+                    this.logger.LogWarning("Form Data Not added successfully");
                     return this.BadRequest(new ResponseModel<string>() { Status = false, Message = "Not added successfully" });
                 }
             }
             catch (Exception ex)
             {
+                this.logger.LogError("Exception Occured While Add data in Form " + ex.Message);
                 return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
             }
         }
+
+        /// <summary>
+        /// Get property details
+        /// </summary>
+        /// <param name="userId">passing a userId</param>
+        /// <returns>returns a property details and message</returns>
         [HttpGet]
         [Route("Property")]
         public IActionResult GetPropertyDetails(int userId)
@@ -75,11 +88,13 @@ namespace DemoLoanProject.Controller
                 }
                 else
                 {
+                    this.logger.LogWarning("UserId does not exist");
                     return this.BadRequest(new ResponseModel<string>() { Status = false, Message = "UserId does not exist" });
                 }
             }
             catch (Exception ex)
             {
+                this.logger.LogError("Exception Occured While Get the property details " + ex.Message);
                 return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
             }
         }
