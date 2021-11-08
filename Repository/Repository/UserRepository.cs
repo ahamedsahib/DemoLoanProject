@@ -1,26 +1,52 @@
-﻿using Microsoft.Extensions.Configuration;
-using Models;
-using Repository.Context;
-using Repository.Interface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="UserRepository.cs" company="TVSNEXT">
+//   Copyright © 2021 Company="TVSNEXT"
+// </copyright>
+// <creator name="Radhika"/>
+// ----------------------------------------------------------------------------------------------------------
 
 namespace Repository.Repository
 {
-    public class UserRepository:IUserRepository
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using Microsoft.Extensions.Configuration;
+    using Models;
+    using global::Repository.Context;
+    using global::Repository.Interface;
+     
+    /// <summary>
+    /// User repository class
+    /// </summary>
+    public class UserRepository : IUserRepository
     {
+        /// <summary>
+        /// Declaring UserContext 
+        /// </summary>
         private readonly UserContext userContext;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UserRepository"/> class
+        /// </summary>
+        /// <param name="userContext">passing a user context</param>
+        /// <param name="configuration">passing a configuration</param>
         public UserRepository(UserContext userContext, IConfiguration configuration)
         {
             this.userContext = userContext;
             this.Configuration = configuration;
         }
- 
+
+        /// <summary>
+        /// Gets  the configuration
+        /// </summary>
         private IConfiguration Configuration { get; }
 
+        /// <summary>
+        /// new Registration for user
+        /// </summary>
+        /// <param name="userData">RegisterModel Data</param>
+        /// <returns>returns string message</returns>
         public string Register(RegisterModel userData)
         {
             try
@@ -35,11 +61,9 @@ namespace Repository.Repository
                         this.userContext.SaveChanges();
                         return "Registration Successful";
                     }
-
-                    return "Registration UnSuccessful";
                 }
 
-                return "Registration UnSuccessful";
+                return "User Already Exist OR Registration UnSuccessful";
             }
             catch (ArgumentNullException ex)
             {
@@ -47,19 +71,15 @@ namespace Repository.Repository
             }
         }
 
-        public string EncryptPassWord(string password)
-        {
-            var passwordInBytes = Encoding.UTF8.GetBytes(password);
-            string encodePassword = Convert.ToBase64String(passwordInBytes);
-            return encodePassword;
-        }
-
-
+        /// <summary>
+        /// Login method
+        /// </summary>
+        /// <param name="loginData">passing a login model</param>
+        /// <returns>returns a register model</returns>
         public RegisterModel Login(LoginModel loginData)
         {
             try
             {
-                // string message;
                 string encodedPassword = this.EncryptPassWord(loginData.Password);
                 var login = this.userContext.UsersData.Where(x => x.EmailId == loginData.EmailId && x.Password == encodedPassword).FirstOrDefault();
 
@@ -69,7 +89,6 @@ namespace Repository.Repository
                 }
                 else
                 {
-                 
                     return login;
                 }
             }
@@ -79,24 +98,16 @@ namespace Repository.Repository
             }
         }
 
-        public RegisterModel GetUserDetails(int userId)
+        /// <summary>
+        /// Encrypt The Password
+        /// </summary>
+        /// <param name="password">Passing Password To Encrypt</param>
+        /// <returns>Encrypted Password</returns>
+        private string EncryptPassWord(string password)
         {
-            try
-            {
-                var userDetails = this.userContext.UsersData.Where(a => a.UserId == userId).SingleOrDefault();
-              
-
-             if(userDetails!=null)
-                {
-                    return userDetails;
-                }
-                return null;
-
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
+            var passwordInBytes = Encoding.UTF8.GetBytes(password);
+            string encodePassword = Convert.ToBase64String(passwordInBytes);
+            return encodePassword;
         }
     }
 }

@@ -70,7 +70,6 @@ namespace DemoLoanProject
                      Description = "Demo Loan Project",
                      Version = "1.0"
                  });
-
             });
             services.AddCors(options =>
             {
@@ -83,10 +82,7 @@ namespace DemoLoanProject
            });
        });
         }
-
-    
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        ////This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 
         /// <summary>
         /// Configure method

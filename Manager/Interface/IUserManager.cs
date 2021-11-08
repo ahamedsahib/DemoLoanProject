@@ -30,12 +30,5 @@ namespace Manager.Interface
         /// <param name="loginData">passing a login model</param>
         /// <returns>returns a register model</returns>
         RegisterModel Login(LoginModel loginData);
-
-        /// <summary>
-        /// Definition for Get user details
-        /// </summary>
-        /// <param name="userId">passing a user id</param>
-        /// <returns>returns a register model</returns>
-        RegisterModel GetUserDetails(int userId);
     }
 }

@@ -18,17 +18,17 @@ namespace Manager.Interface
     public interface IPropertyManager
     {
         /// <summary>
+        /// Add Form 
+        /// </summary>
+        /// <param name="formList">passing a form list </param>
+        /// <returns>returns a string message</returns>
+        string AddForm(FormList formList);
+
+        /// <summary>
         /// Get property details
         /// </summary>
         /// <param name="userId">passing a user id as integer</param>
-        /// <returns>Returns a list of proeprty details</returns>
-        List<PropertyModel> GetPropertyDetails(int userId);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="formList"></param>
-        /// <returns></returns>
-        FormModel AddForm(FormList formList);
+        /// <returns>Returns a list of property details</returns>
+        List<FormModel> GetPropertyDetails(int userId);
     }
 }

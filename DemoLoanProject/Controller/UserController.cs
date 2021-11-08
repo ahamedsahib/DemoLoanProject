@@ -104,34 +104,5 @@ namespace DemoLoanProject.Controller
                 return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
             }
         }
-
-        /// <summary>
-        /// Get User Details based on User Id
-        /// </summary>
-        /// <param name="userId">passing a user id as integer</param>
-        /// <returns>Returns a user details </returns>
-        [HttpGet]
-        [Route("Users")]
-        public IActionResult GetUserDetails(int userId)
-        {
-            try
-            {
-                var resMessage = this.usermanager.GetUserDetails(userId);
-                if (resMessage != null)
-                {
-                    return this.Ok(new { Status = true, Message = "UserDetails returned successfully", Data = resMessage });
-                }
-                else
-                {
-                    this.logger.LogWarning("UserId does not exist");
-                    return this.BadRequest(new ResponseModel<string>() { Status = false, Message = "UserId does not exist" });
-                }
-            }
-            catch (Exception ex)
-            {
-                this.logger.LogError("Exception Occured While log in " + ex.Message);
-                return this.NotFound(new ResponseModel<string>() { Status = false, Message = ex.Message });
-            }
-        }
     }
 }
